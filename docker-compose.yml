@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+    volumes:
+      - study-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-odoo} -d ${POSTGRES_DB:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  odoo:
+    image: odoo:18.0
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./backend/addons:/mnt/extra-addons:ro
+      - odoo-data:/var/lib/odoo
+    command: ["odoo", "--database=study_management", "--init=study_management", "--db_host=db", "--db_user=${POSTGRES_USER:-odoo}", "--db_password=${POSTGRES_PASSWORD:-odoo}", "--addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons", "--http-port=8069", "--without-demo=all"]
+    restart: unless-stopped
+
+  web:
+    image: node:22-alpine
+    working_dir: /app
+    depends_on:
+      - odoo
+    ports:
+      - "5173:5173"
+    environment:
+      ODOO_PROXY_TARGET: http://odoo:8069
+    volumes:
+      - ./frontend:/app
+      - frontend-node-modules:/app/node_modules
+    command: ["sh", "-c", "npm install && npm run dev -- --host 0.0.0.0"]
+    restart: unless-stopped
+
+volumes:
+  study-db-data:
+  odoo-data:
+  frontend-node-modules:

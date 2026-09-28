@@ -1,0 +1,24 @@
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+.venv/
+venv/
+
+# Odoo / local data
+*.log
+*.pid
+data/
+filestore/
+*.dump
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

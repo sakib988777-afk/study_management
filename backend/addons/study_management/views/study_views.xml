@@ -1,0 +1,112 @@
+<odoo>
+    <record id="view_study_course_list" model="ir.ui.view">
+        <field name="name">study.course.list</field>
+        <field name="model">study.course</field>
+        <field name="arch" type="xml">
+            <list string="Courses">
+                <field name="name"/>
+                <field name="subject"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_study_course_form" model="ir.ui.view">
+        <field name="name">study.course.form</field>
+        <field name="model">study.course</field>
+        <field name="arch" type="xml">
+            <form string="Course">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="subject"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Tasks"><field name="task_ids"><list><field name="name"/><field name="date_deadline"/><field name="priority"/><field name="state"/></list></field></page>
+                        <page string="Study sessions"><field name="session_ids"><list><field name="name"/><field name="date_start"/><field name="duration"/></list></field></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_study_task_list" model="ir.ui.view">
+        <field name="name">study.task.list</field>
+        <field name="model">study.task</field>
+        <field name="arch" type="xml">
+            <list string="Study tasks" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="date_deadline"/>
+                <field name="priority" widget="priority"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_study_task_form" model="ir.ui.view">
+        <field name="name">study.task.form</field>
+        <field name="model">study.task</field>
+        <field name="arch" type="xml">
+            <form string="Study task">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="course_id"/>
+                        <field name="date_deadline"/>
+                        <field name="priority" widget="priority"/>
+                        <field name="state"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_study_session_list" model="ir.ui.view">
+        <field name="name">study.session.list</field>
+        <field name="model">study.session</field>
+        <field name="arch" type="xml">
+            <list string="Study sessions">
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="date_start"/>
+                <field name="duration"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_study_session_form" model="ir.ui.view">
+        <field name="name">study.session.form</field>
+        <field name="model">study.session</field>
+        <field name="arch" type="xml">
+            <form string="Study session">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="course_id"/>
+                        <field name="date_start"/>
+                        <field name="duration"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_study_courses" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">study.course</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_study_tasks" model="ir.actions.act_window">
+        <field name="name">Study tasks</field>
+        <field name="res_model">study.task</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_study_sessions" model="ir.actions.act_window">
+        <field name="name">Study sessions</field>
+        <field name="res_model">study.session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_study_root" name="Study Management" sequence="35" groups="base.group_user"/>
+    <menuitem id="menu_study_courses" name="Courses" parent="menu_study_root" action="action_study_courses" sequence="10" groups="base.group_user"/>
+    <menuitem id="menu_study_tasks" name="Study tasks" parent="menu_study_root" action="action_study_tasks" sequence="20" groups="base.group_user"/>
+    <menuitem id="menu_study_sessions" name="Study sessions" parent="menu_study_root" action="action_study_sessions" sequence="30" groups="base.group_user"/>
+</odoo>

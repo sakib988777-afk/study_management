@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_study_course_user,study.course user,model_study_course,base.group_user,1,1,1,1
+access_study_task_user,study.task user,model_study_task,base.group_user,1,1,1,1
+access_study_session_user,study.session user,model_study_session,base.group_user,1,1,1,1
